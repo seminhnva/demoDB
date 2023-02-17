@@ -1,0 +1,72 @@
+<h2 class="text-center">DEMO DATABASE</h2>
+<div class="text-end m-3">
+  <button style="margin-right:8%" class="btn btn-primary" (click)="isGridMode = !isGridMode">
+    Change Mode
+  </button>
+</div>
+<ng-container *ngIf="isGridMode; else tableMode">
+  <div class="wrapper-grey padded">
+    <div class="container">
+      <div class="container-fluid row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+        <div class="col" *ngFor="let item of list">
+          <div
+            class="card"
+            [ngStyle]="{ 'background-image': 'url(' + image + ')' }"
+          >
+            <div class="card-category">City: HCM</div>
+            <div class="card-id text-end">ID: {{item.id}}</div>
+            <div class="card-description">
+              <h2>Name :</h2>
+              <p>Address:</p>
+              <p>Phone:</p>
+            </div>
+            <a class="card-link" href="#"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-template #tableMode>
+  <div class="table-responsive-sm m-5">
+    <table class="table table-responci">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Img</th>
+          <th scope="col">Id</th>
+          <th scope="col">City</th>
+          <th scope="col">Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let item of list
+              | slice
+                : (page - 1) * pageSize
+                : (page - 1) * pageSize + pageSize;
+            let idx = index
+          "
+        >
+          <th scope="row">
+            <img style="height: 55px" [src]="image" alt="" />
+          </th>
+          <td>{{ item.id }}</td>
+          <td>{{ item.city }}city</td>
+          <td>{{ item.name }}name {{ page }}</td>
+          <td>{{ item.address }} address</td>
+          <td>{{ item.phone }}phone</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ngb-pagination
+      class="d-flex justify-content-center"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [collectionSize]="list.length"
+    ></ngb-pagination>
+  </div>
+</ng-template>
